@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 617da338777d064c2f5c51e926d443da2acac850 luv-loinv <nguyenvietloi@luvina.net> 1494325363 +0700	clone: from https://github.com/luv-loinv/training-springboot.git
+617da338777d064c2f5c51e926d443da2acac850 bb2f3a8dafc84055c96ab7f2e8e222f98664d62e luv-loinv <nguyenvietloi@luvina.net> 1494325989 +0700	pull -v --progress origin: Fast-forward
+bb2f3a8dafc84055c96ab7f2e8e222f98664d62e dcb89d36fa3aba717f3608f17bfec3d4dda6b1df luv-loinv <nguyenvietloi@luvina.net> 1494327662 +0700	pull -v --progress origin: Fast-forward
+dcb89d36fa3aba717f3608f17bfec3d4dda6b1df dcb89d36fa3aba717f3608f17bfec3d4dda6b1df luv-loinv <nguyenvietloi@luvina.net> 1494380295 +0700	checkout: moving from master to nguyenthanhtung
+dcb89d36fa3aba717f3608f17bfec3d4dda6b1df 2b37c53b9db369dc90900418985c9a67e8c3eb5b luv-loinv <nguyenvietloi@luvina.net> 1494380332 +0700	commit: create branch nguyenthanhtung

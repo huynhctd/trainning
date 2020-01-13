@@ -1,0 +1,56 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven { url "http://dl.bintray.com/dai0304/spar-wings" } // for spar-wings
+	maven { url "http://classmethod-metropolis-repo.s3-website-ap-northeast-1.amazonaws.com/release" }
+}
+
+
+ext {
+	vaadinVersion = '8.0.5'
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('com.vaadin:vaadin-spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile("mysql:mysql-connector-java")
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compileOnly 'org.projectlombok:lombok'
+	compile "jp.xet.spar-wings:spar-wings-httpexceptions:0.38"
+	compile "com.google.guava:guava:23.6-jre"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
+	}
+}
+buildscript {
+	repositories {
+		maven {
+			url 'https://plugins.gradle.org/m2/'
+		}
+	}
+	dependencies {
+		classpath 'io.freefair.gradle:lombok-plugin:3.8.4'
+	}
+}
