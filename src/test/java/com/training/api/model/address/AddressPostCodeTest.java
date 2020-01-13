@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.ObjectContent;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -53,7 +54,7 @@ public class AddressPostCodeTest {
     @Test
     public void testOK() {
         // setup
-        AddressPostCode sut = (AddressPostCode) AddressPostCodeFixtures.createAddressPostCode();
+        AddressPostCode sut = AddressPostCodeFixtures.createAddressPostCode();
         // exercise
         Set<ConstraintViolation<AddressPostCode>> actual = validator.validate(sut);
         // verify

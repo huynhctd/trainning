@@ -20,7 +20,6 @@ public class AddressPostCode {
     /**
      * City code.
      */
-    @JsonProperty("code")
     private String cityCode;
 
     /**

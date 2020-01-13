@@ -45,7 +45,7 @@ public class AddressControllerTest {
     @Test
     public void SearchByPostCode() throws Exception {
         // setup
-        AddressPostCode area = (AddressPostCode) AddressPostCodeFixtures.createAddressPostCode();
+        AddressPostCode area = AddressPostCodeFixtures.createAddressPostCode();
         List<AddressPostCode> listArea = new ArrayList<>();
         listArea.add(area);
         given(addressService.findByPostCode(area.getPostCode())).willReturn(listArea);
@@ -54,8 +54,7 @@ public class AddressControllerTest {
                 // verify
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("@.data[0].post_code").value(is(area.getPostCode())))
-                .andExpect(jsonPath("@.data[0].prefecture_code").value(is(area.getPrefectureCode())))
-                .andExpect(jsonPath("@.data[0].code").value(is(area.getCityCode())));
+                .andExpect(jsonPath("@.data[0].prefecture_code").value(is(area.getPrefectureCode())));
     }
 
     /**
@@ -91,7 +90,7 @@ public class AddressControllerTest {
     @Test
     public void SearchByPrefectureCode() throws Exception {
         // setup
-        AddressPrefectureCode city = (AddressPrefectureCode) AddressPrefectureCodeFixture.createAddressPrefectureCode();
+        AddressPrefectureCode city = AddressPrefectureCodeFixture.createAddressPrefectureCode();
         List<AddressPrefectureCode> listCity = new ArrayList<>();
         listCity.add(city);
         given(addressService.findByPrefectureCode(city.getPrefectureCode())).willReturn(listCity);

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.ObjectContent;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -47,9 +48,9 @@ public class AddressPrefectureCodeTest {
     @Test
     public void testOK() {
         // setup
-        List<AddressPrefectureCode> sut = AddressPrefectureCodeFixture.createAddressPrefectureCode();
+        AddressPrefectureCode sut = AddressPrefectureCodeFixture.createAddressPrefectureCode();
         // exercise
-        Set<ConstraintViolation<List<AddressPrefectureCode>>> actual = validator.validate(sut);
+        Set<ConstraintViolation<AddressPrefectureCode>> actual = validator.validate(sut);
         // verify
         assertThat(actual).hasSize(0);
     }
@@ -62,5 +63,15 @@ public class AddressPrefectureCodeTest {
         Set<ConstraintViolation<AddressPrefectureCode>> actual = validator.validate(sut);
         // verify
         assertThat(actual).hasSize(0);
+    }
+    @Test
+    public void testJsonToValueCity() throws Exception {
+        // setup
+        String CityJson = createResourceCityJsonString();
+        AddressPrefectureCode addressPrefectureCode = AddressPrefectureCodeFixture.createAddressPrefectureCode();
+        // exercise
+        ObjectContent<AddressPrefectureCode> actual = json.parse(CityJson);
+        // verify
+        actual.assertThat().isEqualTo(addressPrefectureCode);
     }
 }

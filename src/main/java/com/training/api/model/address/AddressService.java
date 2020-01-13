@@ -58,3 +58,4 @@ public class AddressService {
         return cities.stream().map(AddressPrefectureCode::new).collect(Collectors.toList());
     }
 }
+
