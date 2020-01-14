@@ -11,7 +11,7 @@ public class Validate {
          */
         public static void checkHalfSize(String code) {
             if(!code.matches("\\d+")) {
-                throw new IllegalArgumentException("Code must be half size number.");
+                throw new IllegalArgumentException("Code must be half size number");
             }
         }
         /**

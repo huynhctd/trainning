@@ -32,8 +32,8 @@ public class AddressService {
      */
     public List<AddressPostCode> findByPostCode(String postCode) {
         Preconditions.checkNotNull(postCode,"Code must be not null");
+        Validate.AddressValidates.checkFormat(postCode);
         postCode = Validate.AddressValidates.replaceCode(postCode);
-        Validate.AddressValidates.checkHalfSize(postCode);
         List<Area> areas = areaRepository.findByPostPostCode(postCode);
         if(areas.isEmpty()){
             throw new HttpNotFoundException("PostCode not found");

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 import org.springframework.boot.test.json.ObjectContent;
 
 import javax.validation.ConstraintViolation;
@@ -73,5 +74,19 @@ public class AddressPrefectureCodeTest {
         ObjectContent<AddressPrefectureCode> actual = json.parse(CityJson);
         // verify
         actual.assertThat().isEqualTo(addressPrefectureCode);
+    }
+    @Test
+    public void testValueToJson() throws Exception {
+        // setup
+        AddressPrefectureCode addressPrefectureCode = AddressPrefectureCodeFixture.createAddressPrefectureCode();
+        // exercise
+        JsonContent<AddressPrefectureCode> actual = json.write(addressPrefectureCode);
+        // verify
+        assertThat(actual).extractingJsonPathStringValue("@.code").isEqualTo("05207");
+        assertThat(actual).extractingJsonPathStringValue("@.city").isEqualTo("湯沢市");
+        assertThat(actual).extractingJsonPathStringValue("@.city_kana").isEqualTo("ﾕｻﾞﾜｼ");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture").isEqualTo("秋田県");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture_kana").isEqualTo("ｱｷﾀｹﾝ");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture_code").isEqualTo("05");
     }
 }

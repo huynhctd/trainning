@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.boot.test.json.JsonContent;
 import org.springframework.boot.test.json.ObjectContent;
 
 import javax.validation.ConstraintViolation;
@@ -69,5 +70,28 @@ public class AddressPostCodeTest {
         Set<ConstraintViolation<AddressPostCode>> actual = validator.validate(sut);
         // verify
         assertThat(actual).hasSize(0);
+    }
+    @Test
+    public void testValueToJson() throws Exception {
+        // setup
+        AddressPostCode addressPostCode = AddressPostCodeFixtures.createAddressPostCode();
+        // exercise
+        JsonContent<AddressPostCode> actual = json.write(addressPostCode);
+        // verify
+        assertThat(actual).extractingJsonPathStringValue("@.city").isEqualTo("湯沢市");
+        assertThat(actual).extractingJsonPathStringValue("@.city_kana").isEqualTo("ﾕｻﾞﾜｼ");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture").isEqualTo("秋田県");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture_kana").isEqualTo("ｱｷﾀｹﾝ");
+        assertThat(actual).extractingJsonPathStringValue("@.prefecture_code").isEqualTo("05");
+        assertThat(actual).extractingJsonPathStringValue("@.area").isEqualTo("カツクイ沢山");
+        assertThat(actual).extractingJsonPathStringValue("@.area_kana").isEqualTo("ｶｯｸｲｻﾜﾔﾏ");
+        assertThat(actual).extractingJsonPathNumberValue("@.multi_post_area").isEqualTo(0);
+        assertThat(actual).extractingJsonPathNumberValue("@.koaza_area").isEqualTo(0);
+        assertThat(actual).extractingJsonPathNumberValue("@.chome_area").isEqualTo(0);
+        assertThat(actual).extractingJsonPathStringValue("@.old_post_code").isEqualTo("012");
+        assertThat(actual).extractingJsonPathStringValue("@.post_code").isEqualTo("0120833");
+        assertThat(actual).extractingJsonPathNumberValue("@.multi_area").isEqualTo(0);
+        assertThat(actual).extractingJsonPathNumberValue("@.update_show").isEqualTo(0);
+        assertThat(actual).extractingJsonPathNumberValue("@.change_reason").isEqualTo(0);
     }
 }

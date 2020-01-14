@@ -1,12 +1,5 @@
 package com.training.api.model.address;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.ThrowableAssert.catchThrowable;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
-
 import com.training.api.model.area.Area;
 import com.training.api.model.area.AreaFixtures;
 import com.training.api.model.area.AreaRepository;
@@ -15,9 +8,9 @@ import com.training.api.model.city.CityFixtures;
 import com.training.api.model.city.CityRepository;
 import jp.xet.sparwings.spring.web.httpexceptions.HttpBadRequestException;
 import jp.xet.sparwings.spring.web.httpexceptions.HttpNotFoundException;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -25,6 +18,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 /**
  * Test for {@link AddressService}.
@@ -40,6 +40,7 @@ public class AddressServiceTest {
 
     AddressService sut;
 
+    @Before
     @BeforeEach
     public void setUp() {
         sut = new AddressService(areaRepository,cityRepository);
@@ -72,8 +73,8 @@ public class AddressServiceTest {
     @Test
     public void findByPostCodeThrowsHFE(){
         // exercise
-        assertThatThrownBy(()-> sut.findByPostCode("01208371")).isInstanceOf(HttpNotFoundException.class)
-                .hasMessage("Postcode not found.");
+        assertThatThrownBy(()-> sut.findByPostCode("10000000")).isInstanceOf(HttpNotFoundException.class)
+                .hasMessage("PostCode not found");
     }
 
     /**
@@ -93,7 +94,7 @@ public class AddressServiceTest {
     public void findByPostCodeTestThrowsIAE(){
         // exercise
         assertThatThrownBy(()-> sut.findByPostCode("abc")).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Code must be half size number");
+                .hasMessage("Code format fail");
     }
 
     /**
@@ -105,7 +106,7 @@ public class AddressServiceTest {
         City city = CityFixtures.createCity();
         List<City> listCity = new ArrayList<>();
         listCity.add(city);
-        AddressPrefectureCode addressPrefectureCode = (AddressPrefectureCode) AddressPrefectureCodeFixture.createAddressPrefectureCode();
+        AddressPrefectureCode addressPrefectureCode = AddressPrefectureCodeFixture.createAddressPrefectureCode();
         when(cityRepository.findByPrefecturePrefectureCode(city.getPrefecture().getPrefectureCode())).thenReturn(listCity);
 
         // exercise
@@ -123,8 +124,8 @@ public class AddressServiceTest {
     @Test
     public void findByPrefectureCodeThrowsHFE(){
         // exercise
-        assertThatThrownBy(()-> sut.findByPrefectureCode("100")).isInstanceOf(HttpNotFoundException.class)
-                .hasMessage("Prefecturecode not found.");
+        assertThatThrownBy(()-> sut.findByPrefectureCode("100-00-0-0")).isInstanceOf(HttpNotFoundException.class)
+                .hasMessage("PrefectureCode not found");
     }
 
     /**
@@ -134,7 +135,7 @@ public class AddressServiceTest {
     public void findByPrefectureCodeThrowsNPE(){
         // exercise
         assertThatThrownBy(()-> sut.findByPrefectureCode(null)).isInstanceOf(NullPointerException.class)
-                .hasMessage("Code must be not null.");
+                .hasMessage("Code must be not null");
     }
 
     /**
@@ -144,7 +145,7 @@ public class AddressServiceTest {
     public void findByPrefectureCodeThrowsIAE(){
         // exercise
         assertThatThrownBy(()-> sut.findByPrefectureCode("abc")).isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Code must be half size number.");
+                .hasMessage("Code must be half size number");
     }
     @Test
     public void testSearchByPostCode_InvalidFormatOfPostCode_ThrowsHBRE(){

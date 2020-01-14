@@ -7,7 +7,7 @@ public class AddressPostCodeFixtures {
         addressPostCode.setAreaName("カツクイ沢山");
         addressPostCode.setAreaKana("ｶｯｸｲｻﾜﾔﾏ");
         addressPostCode.setCityName("湯沢市");
-        addressPostCode.setCityCode("05207");
+        addressPostCode.setPostCode("05207");
         addressPostCode.setCityKana("ﾕｻﾞﾜｼ");
         addressPostCode.setPostCode("0120833");
         addressPostCode.setPrefectureCode("05");
