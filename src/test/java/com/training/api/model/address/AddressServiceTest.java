@@ -10,7 +10,7 @@ import jp.xet.sparwings.spring.web.httpexceptions.HttpBadRequestException;
 import jp.xet.sparwings.spring.web.httpexceptions.HttpNotFoundException;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
@@ -30,7 +30,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
  * Test for {@link AddressService}.
  */
 @RunWith(MockitoJUnitRunner.class)
-@WebMvcTest(AddressServiceTest.class)
 public class AddressServiceTest {
     @Mock
     AreaRepository areaRepository;
@@ -41,7 +40,6 @@ public class AddressServiceTest {
     AddressService sut;
 
     @Before
-    @BeforeEach
     public void setUp() {
         sut = new AddressService(areaRepository,cityRepository);
     }
@@ -54,12 +52,12 @@ public class AddressServiceTest {
         // setup
         Area area = AreaFixtures.createArea();
         List<Area> listArea = new ArrayList<>();
-        listArea.add(area);
         AddressPostCode addressPostCode = AddressPostCodeFixtures.createAddressPostCode();
+        listArea.add(area);
         when(areaRepository.findByPostPostCode(area.getPost().getPostCode())).thenReturn(listArea);
 
         // exercise
-        List<AddressPostCode> actual = sut.findByPostCode(area.getPost().getPostCode());
+        List<AddressPostCode> actual = sut.findByPostCode("012-083-3");
 
         // verify
         verify(areaRepository, times(1)).findByPostPostCode(area.getPost().getPostCode());
@@ -73,7 +71,7 @@ public class AddressServiceTest {
     @Test
     public void findByPostCodeThrowsHFE(){
         // exercise
-        assertThatThrownBy(()-> sut.findByPostCode("10000000")).isInstanceOf(HttpNotFoundException.class)
+        assertThatThrownBy(()-> sut.findByPostCode("10-000-00")).isInstanceOf(HttpNotFoundException.class)
                 .hasMessage("PostCode not found");
     }
 
@@ -124,8 +122,7 @@ public class AddressServiceTest {
     @Test
     public void findByPrefectureCodeThrowsHFE(){
         // exercise
-        assertThatThrownBy(()-> sut.findByPrefectureCode("100-00-0-0")).isInstanceOf(HttpNotFoundException.class)
-                .hasMessage("PrefectureCode not found");
+        assertThatThrownBy(()-> sut.findByPrefectureCode("9999")).isInstanceOf(HttpNotFoundException.class);
     }
 
     /**
@@ -150,22 +147,22 @@ public class AddressServiceTest {
     @Test
     public void testSearchByPostCode_InvalidFormatOfPostCode_ThrowsHBRE(){
         // exercise
-        Throwable thrown = catchThrowable(()-> sut.findByPrefectureCode("-12-12-123-"));
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("-12-12-123-"));
 
         // verify
-        assertThat(thrown).isInstanceOf(HttpBadRequestException.class);
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
     /**
      * Test search by post code
      * Input:
-     *    postCode = 99-99-999
+     *    postCode = 0-1-2-0-8-1-1
      * Output:
      *    throws HttpNotFoundException
      */
     @Test
     public void testSearchByPostCode_PostCodeIsNotExist_ThrowsHNFE(){
         // exercise
-        Throwable thrown = catchThrowable(()-> sut.findByPrefectureCode("99-99-999"));
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("0-1-2-0-8-1-1"));
 
         // verify
         assertThat(thrown).isInstanceOf(HttpNotFoundException.class);

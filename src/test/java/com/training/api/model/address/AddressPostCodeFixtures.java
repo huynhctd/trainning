@@ -2,7 +2,7 @@ package com.training.api.model.address;
 
 
 public class AddressPostCodeFixtures {
-    public static AddressPostCode createAddressPostCode(){
+    public static AddressPostCode createAddressPostCode() {
         AddressPostCode addressPostCode = new AddressPostCode();
         addressPostCode.setAreaName("カツクイ沢山");
         addressPostCode.setAreaKana("ｶｯｸｲｻﾜﾔﾏ");
@@ -10,6 +10,7 @@ public class AddressPostCodeFixtures {
         addressPostCode.setPostCode("05207");
         addressPostCode.setCityKana("ﾕｻﾞﾜｼ");
         addressPostCode.setPostCode("0120833");
+        addressPostCode.setCityCode("05207");
         addressPostCode.setPrefectureCode("05");
         addressPostCode.setPrefectureName("秋田県");
         addressPostCode.setPrefectureKana("ｱｷﾀｹﾝ");
