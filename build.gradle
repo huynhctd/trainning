@@ -37,8 +37,29 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	compile "jp.xet.spar-wings:spar-wings-httpexceptions:0.38"
 	compile "com.google.guava:guava:23.6-jre"
-}
 
+	// testing
+	testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+	testCompile "org.flywaydb.flyway-test-extensions:flyway-dbunit-test:4.0.1"
+	testCompile "com.h2database:h2:1.4.192"
+	testImplementation "junit:junit:junit-jupiter:5.5.1"
+	testCompile "org.hamcrest:hamcrest-library:$hamcrestVersion"
+	testCompile "org.mockito:mockito-core:mockito-core:2.+"
+	testCompile "com.jayway.jsonpath:json-path-assert:2.2.0"
+	
+}
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		if (details.requested.name == "commons-logging") {
+			// prefer "jcl-over-slf4j" over "commons-logging":
+			details.useTarget "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+		}
+		if (details.requested.name == "log4j") {
+			// prefer "log4j-over-slf4j" over "log4j":
+			details.useTarget "org.slf4j:log4j-over-slf4j:$slf4jVersion"
+		}
+	}
+}
 dependencyManagement {
 	imports {
 		mavenBom "com.vaadin:vaadin-bom:${vaadinVersion}"
