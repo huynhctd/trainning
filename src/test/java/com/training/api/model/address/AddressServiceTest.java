@@ -6,15 +6,12 @@ import com.training.api.model.area.AreaRepository;
 import com.training.api.model.city.City;
 import com.training.api.model.city.CityFixtures;
 import com.training.api.model.city.CityRepository;
-import jp.xet.sparwings.spring.web.httpexceptions.HttpBadRequestException;
 import jp.xet.sparwings.spring.web.httpexceptions.HttpNotFoundException;
 import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
  import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,6 +115,10 @@ public class AddressServiceTest {
 
     /**
      * Test prefecture code throws HttpNotFoundException
+     * Input
+     *      prefectureCode = 9999
+     * Output:
+     *      *    throws HttpNotFoundException
      */
     @Test
     public void findByPrefectureCodeThrowsHFE(){
@@ -127,6 +128,10 @@ public class AddressServiceTest {
 
     /**
      * Test prefecture code throws NullPointerException
+     * Input
+     *      prefectureCode = Null
+     * Output:
+     *      *    throws NullPointerException
      */
     @Test
     public void findByPrefectureCodeThrowsNPE(){
@@ -137,21 +142,174 @@ public class AddressServiceTest {
 
     /**
      * Test prefecture code throws IllegalArgumentException
+     * Input
+     *      prefectureCode = abc
+     * Output:
+     *      *    throws IllegalArgumentException
      */
     @Test
-    public void findByPrefectureCodeThrowsIAE(){
+    public void findByPrefectureCodeThrowsIAE1(){
         // exercise
         assertThatThrownBy(()-> sut.findByPrefectureCode("abc")).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Code must be half size number");
     }
+
+    /**
+     * Test prefecture code throws IllegalArgumentException
+     * Input
+     *      prefectureCode = a10
+     * Output:
+     *      *    throws IllegalArgumentException
+     */
     @Test
-    public void testSearchByPostCode_InvalidFormatOfPostCode_ThrowsHBRE(){
+    public void findByPrefectureCodeThrowsIAE2(){
+        // exercise
+        assertThatThrownBy(()-> sut.findByPrefectureCode("a10")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Code must be half size number");
+    }
+
+    /**
+     * Test prefecture code throws IllegalArgumentException
+     * Input
+     *      prefectureCode = 1*1
+     * Output:
+     *      *    throws IllegalArgumentException
+     */
+    @Test
+    public void findByPrefectureCodeThrowsIAE3(){
+        // exercise
+        assertThatThrownBy(()-> sut.findByPrefectureCode("1*1")).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Code must be half size number");
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = -12-12-123
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode1_ThrowsHBRE(){
         // exercise
         Throwable thrown = catchThrowable(()-> sut.findByPostCode("-12-12-123-"));
 
         // verify
         assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
     }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 12-12-123-
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode2_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("12-12-123-"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 12-12--123
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode3_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("12-12--123"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 10-000-0
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode4_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("10-000-0"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 10-000-000
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode5_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("10-000-000"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 012/083*3
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode6_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("012/083*3"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 012a083-3
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode7_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("012a083-3"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    /**
+     * Test search by post code
+     * Input:
+     *    postCode = 012 083-3
+     * Output:
+     *    throws IllegalArgumentException
+     */
+    @Test
+    public void testSearchByPostCode_InvalidFormatOfPostCode8_ThrowsHBRE(){
+        // exercise
+        Throwable thrown = catchThrowable(()-> sut.findByPostCode("012 083-3"));
+
+        // verify
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class);
+    }
+
     /**
      * Test search by post code
      * Input:
