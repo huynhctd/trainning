@@ -83,3 +83,4 @@ public class City {
         this.prefecture = prefecture;
     }
 }
+

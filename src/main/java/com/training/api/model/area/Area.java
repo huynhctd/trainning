@@ -134,3 +134,4 @@ public class Area {
         this.oldPost = oldPost;
     }
 }
+

@@ -19,7 +19,7 @@ public class Validate {
          * @param code code
          */
         public static void checkFormat (String code) {
-            if((code.matches("[0-9]{1,3}(-[0-9]{1,3}){2,6}") && replaceCode(code).matches("[0-9]{7}")) == false) {
+            if((code.matches("(?=^(\\D*\\d\\D*){7}$)(?:([0-9]{1,3}(-[0-9]{1,3}){2,6}))")) == false) {
                 throw new IllegalArgumentException("Code format fail");
             }
         }
